@@ -40,3 +40,25 @@ class Solution:
             return maxans
         else:
             return 0
+#解法3（不使用sort）：一个数字出现的频次要是超过了数组中个数的一半，那就是这个数字出现的个数比数组中其他数字出现次数的总和还要多，这样的话，让那个数字的频次和其他数字的频次相抵消，最后那个数字的频次应该还是大于等于1的，这样的话，我用一个值记录数组的数字，一个值记录频次，如果这个值和下一个数字相同，频次加1 ，不同的话，频次减1，如果次数为0的话，就让记录数字那个值更换为当下的数字，这样记录数字的值在频次值不为0时，记录的一定是出现次数最多的那个数字，等遍历完数组，如果存在之前提到那样的数，那一定是最后的频次值不为0的数，就意味着，记录数字的那个值就是我们想要的那个值。但是最后还要检验一下这个值得次数是不是满足大于一半数组长度的条件。因为之前的分析，只是分析出现那样的数时，最后的频次一定不为0 ，但是当最后的频次不为0时，并不是一定是满足条件的数。比如，里面存在一个刚好频次是数组长度一半的数，最后的频次就为0，这是的记录值会记录成最后一个值，那这个记录值就不满足我们的要求。
+# -*- coding:utf-8 -*-
+class Solution:
+    def MoreThanHalfNum_Solution(self, numbers):
+        # write code here
+        if not numbers or len(numbers)<=0:
+            return 0
+        res=numbers[0]
+        times=1
+        for i in range(1,len(numbers)):
+            if times==0:
+                res=numbers[i]
+                times=1
+            elif numbers[i]==res:
+                times+=1
+            else:
+                times-=1
+        sum=0
+        for j in numbers:
+            if j==res:
+                sum+=1
+        return res if sum*2>len(numbers) else 0
