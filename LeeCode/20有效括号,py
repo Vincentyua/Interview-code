@@ -1,0 +1,33 @@
+'''
+给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串，判断字符串是否有效。有效字符串需满足：左括号必须用相同类型的右括号闭合。左括号必须以正确的顺序闭合。注意空字符串可被认为是有效字符串。
+思路：1.使用栈辅助解决，遇到左括号进栈，遇到右括号分情况讨论：如果栈不空，取出第一个栈顶元素看是否匹配，匹配的话，继续遍历接下来的字符串，如果栈为空，返回false，如果不匹配，返回false。2.直接假设是满足的括号，则最中间的一对括号有一定是三类括号的一个，将这一对取出后，剩下的字符串中间的肯定也是一个，这样，我把所有的都取出后，肯定是一个空的字符串，因此只要循环去取出括号，判断最后是否是空的字符串就行
+'''
+#解法一：
+class Solution:
+    def isValid(self, s: str) -> bool:
+        tmp = len(s)
+        left = ['{','[','(']
+        right = {')':'(','}':'{',']':'['}
+        i = 0
+        stack = []
+        for i in s:
+            if i in left:
+                stack.append(i)
+            else:
+                if len(stack) == 0:
+                    return False
+                elif stack.pop() != right[i]:
+                    return False
+        if len(stack) == 0:
+            return True
+        else:
+            return False
+#备注：主要是在判断stack为空的时候，不能用 is None来判断，None是一个空的对象，不是数据为空
+#解法二：
+class Solution:
+    def isValid(self, s: str) -> bool:
+        while '{}' in s or '()' in s or '[]' in s:
+            s = s.replace('{}', '')
+            s = s.replace('[]', '')
+            s = s.replace('()', '')
+        return s == ''
